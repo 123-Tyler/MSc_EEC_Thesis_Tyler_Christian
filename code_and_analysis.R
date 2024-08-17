@@ -2,7 +2,7 @@
 
 # Edit required
 getwd()
-setwd("C:/Users/fishm/OneDrive/Documents/MSc EEC/Thesis/Results/all_analysis/MSc_Thesis_Tyler_Christian")
+setwd("C:/Users/fishm/OneDrive/Documents/MSc EEC/Thesis/Results/all_analysis/MSc_EEC_Thesis_Tyler_Christian")
 
 library(tidyverse)
 library(factoextra)

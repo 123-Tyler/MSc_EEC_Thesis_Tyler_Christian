@@ -1,6 +1,6 @@
 # READ ME 
 
-## How to Speak Sparrow: Categorising the Major Vocalisations in House Sparrows (*Passer domesticus*)
+## How to Speak Sparrow: A Modern Classification System of House Sparrow (*Passer domesticus*) Vocalisations
 
 #### Student: Tyler Christian
 
