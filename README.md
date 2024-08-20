@@ -104,14 +104,3 @@
     
 -   Fig_3.4.1_dendrogram_optimised.jpeg
     -   Hirearchical cluster analysis of extracted acoustic parameters using data from Avisoft.
-
--   Fig_3.1.1_taxidermy_plot.jpeg
-    -   Histogram displaying the change in mean call frequencies before and after taxidermy and wild starling stimuli.
-
--   Fig_3.2.1_dendrogram_optimised.jpeg
-    -   Hirearchical cluster analysis of extracted acoustic parameters using data from Avisoft.
-
--   Fig_3.3.1_before_after_plot.jpeg
-    -   Line plot showing change in call frequencies before and after threatening stimuli.
--   SI_5_PCA.jpeg
-    -   PCA of extracted acoustic parameters. The plot has been grouped twice: site and call type.
