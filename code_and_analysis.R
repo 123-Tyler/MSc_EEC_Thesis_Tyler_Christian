@@ -13,7 +13,7 @@ library(MCMCglmm)
 library(stats)
 library(parallel)
 
-# Data --------------------------------------------------------------------
+# Data Tidying ------------------------------------------------------------
 
 # Note: all data files have been formatted for data tidying and for optimal use in later analysis.
 
@@ -54,12 +54,13 @@ koe_data <- read.csv("koe_data.csv", na.strings = "") %>%
     site = gsub(x = site, pattern = "essex", replacement = "mainland")
   ) %>%
   mutate( 
-    CC_per_time = CC / duration, # standardizing call frequencies according to audio clip duration
-    DW_per_time = DW / duration,
-    HQ_per_time = HQ / duration,
-    CA_per_time = CA / duration,
-    NC_per_time = NC / duration,
-    TQ_per_time = TQ / duration
+    duration_sec = duration/10000, # converting duration from milliseconds to decisecond 
+    CC_per_time = CC / duration_sec, # standardizing call frequencies according to audio clip duration
+    DW_per_time = DW / duration_sec,
+    HQ_per_time = HQ / duration_sec,
+    CA_per_time = CA / duration_sec,
+    NC_per_time = NC / duration_sec,
+    TQ_per_time = TQ / duration_sec
   )
 
 # All field data recorded on Lundy and the Mainland
@@ -404,12 +405,49 @@ dendrogram_optimised <-  # Creating base dendrogram
     "text",
     x = 22,
     y = -1.35,
-    size = 2.5,
+    size = 3,
     label = "CA"
   ) +
   annotate(
     "rect",
     xmin = 44,
+    xmax = 56,
+    ymin = -1.8,
+    ymax = -0.9,
+    alpha = .3,
+    fill = "#661100",
+    color = "black",
+    lwd = 0.3
+  ) +
+  annotate(
+    "text",
+    x = 50,
+    y = -1.35,
+    size = 3,
+    label = "CC"
+  ) +
+  theme(plot.title = element_blank()) +
+  annotate(
+    "rect",
+    xmin = 56,
+    xmax = 61,
+    ymin = -1.8,
+    ymax = -0.9,
+    alpha = .3,
+    fill = "#88ccee",
+    color = "black",
+    lwd = 0.3
+  ) +
+  annotate(
+    "text",
+    x = 58.5,
+    y = -1.35,
+    size = 3,
+    label = "CA"
+  ) +  
+  annotate(
+    "rect",
+    xmin = 61,
     xmax = 95,
     ymin = -1.8,
     ymax = -0.9,
@@ -420,9 +458,9 @@ dendrogram_optimised <-  # Creating base dendrogram
   ) +
   annotate(
     "text",
-    x = 69.5,
+    x = 78,
     y = -1.35,
-    size = 2.5,
+    size = 3,
     label = "CC"
   ) +
   annotate(
@@ -440,7 +478,7 @@ dendrogram_optimised <-  # Creating base dendrogram
     "text",
     x = 99,
     y = -1.35,
-    size = 2.5,
+    size = 3,
     label = "NC"
   ) +
   annotate(
@@ -458,7 +496,7 @@ dendrogram_optimised <-  # Creating base dendrogram
     "text",
     x = 110.5,
     y = -1.35,
-    size = 2.5,
+    size = 3,
     label = "CA"
   ) +
   annotate(
@@ -476,7 +514,7 @@ dendrogram_optimised <-  # Creating base dendrogram
     "text",
     x = 121.5,
     y = -1.35,
-    size = 2.5,
+    size = 3,
     label = "DW"
   ) +
   annotate(
@@ -494,7 +532,7 @@ dendrogram_optimised <-  # Creating base dendrogram
     "text",
     x = 131,
     y = -1.35,
-    size = 2.5,
+    size = 3,
     label = "HQ"
   ) +
   annotate(
@@ -512,7 +550,7 @@ dendrogram_optimised <-  # Creating base dendrogram
     "text",
     x = 139.5,
     y = -1.35,
-    size = 2.5,
+    size = 3,
     label = "TQ"
   ) +
   annotate(
@@ -530,7 +568,7 @@ dendrogram_optimised <-  # Creating base dendrogram
     "text",
     x = 144,
     y = -1.35,
-    size = 2.5,
+    size = 3,
     label = "NC"
   ) +
   annotate(
@@ -548,7 +586,7 @@ dendrogram_optimised <-  # Creating base dendrogram
     "text",
     x = 152.5,
     y = -1.35,
-    size = 2.5,
+    size = 3,
     label = "TQ"
   ) +
   annotate(
@@ -566,29 +604,34 @@ dendrogram_optimised <-  # Creating base dendrogram
     "text",
     x = 163,
     y = -1.35,
-    size = 2.5,
+    size = 3,
     label = "NC"
   ) +
   annotate(
     "text",
     x = -5.1,
     y = -1.35,
-    size = 2.5,
+    size = 3,
     label = "Group"
-  )
+  ) +
+  theme(axis.text.y = element_text(size = 12),
+        axis.title.y = element_text(size = 12))
 
 dendrogram_optimised
 
-ggsave("Fig_3.4.1_dendrogram_optimised.jpg", width = 10.4, height = 6, units = "in")
+ggsave("Fig_3.4.1_dendrogram_optimised.jpg", width = 10.4, height = 5.7, units = "in")
 
 # Linear Mixed Models of Call Rates ----------------------------------------------------------------------
 
-CC_model <- lmer(CC_per_time ~ before_after + (1|taxidermy_wild/control_threat) + (1|site) + total_sparrows, data = combined_data_long_binary_ba)
-NC_model <- lmer(NC_per_time ~ before_after + (1|taxidermy_wild/control_threat) + (1|site) + total_sparrows, data = combined_data_long_binary_ba)
-TQ_model <- lmer(TQ_per_time ~ before_after + (1|taxidermy_wild/control_threat) + (1|site) + total_sparrows, data = combined_data_long_binary_ba)
-HQ_model <- lmer(HQ_per_time ~ before_after + (1|taxidermy_wild/control_threat) + (1|site) + total_sparrows, data = combined_data_long_binary_ba)
-CA_model <- lmer(CA_per_time ~ before_after + (1|taxidermy_wild/control_threat) + (1|site) + total_sparrows, data = combined_data_long_binary_ba)
-DW_model <- lmer(DW_per_time ~ before_after + (1|taxidermy_wild/control_threat) + (1|site) + total_sparrows, data = combined_data_long_binary_ba)
+combined_data_long_binary_ba <- combined_data_long_binary_ba %>% 
+  group_by(audio_marker)
+
+CC_model <- lmer(CC_per_time ~ before_after + total_sparrows + (1|taxidermy_wild/control_threat) + (1|site), data = combined_data_long_binary_ba)
+NC_model <- lmer(NC_per_time ~ before_after + total_sparrows + (1|taxidermy_wild/control_threat) + (1|site), data = combined_data_long_binary_ba)
+TQ_model <- lmer(TQ_per_time ~ before_after + total_sparrows + (1|taxidermy_wild/control_threat) + (1|site), data = combined_data_long_binary_ba)
+HQ_model <- lmer(HQ_per_time ~ before_after + total_sparrows + (1|taxidermy_wild/control_threat) + (1|site), data = combined_data_long_binary_ba)
+CA_model <- lmer(CA_per_time ~ before_after + total_sparrows + (1|taxidermy_wild/control_threat) + (1|site), data = combined_data_long_binary_ba)
+DW_model <- lmer(DW_per_time ~ before_after + total_sparrows + (1|taxidermy_wild/control_threat) + (1|site), data = combined_data_long_binary_ba)
 
 summary(CC_model)
 summary(NC_model)
@@ -615,16 +658,17 @@ before_after_plot <- calls_long_mean_no_stimuli %>%
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), 
                 width = 0.04,
                 lwd = 0.2) +
-  ylab("Mean Calls") +
-  labs(color = "Call Type") +
+  ylab("Mean Call Count") +
   theme_bw() +
-  theme(axis.title.x = element_blank()) +
+  theme(axis.title.x = element_blank(),
+        text = element_text(size = 15),
+        legend.title = element_blank()) +
   scale_x_discrete(limits = rev) +
   scale_color_manual(values = c("#88ccee","#661100","#117733","#999933","#e31a1c","#aa4499"))
 
 before_after_plot
 
-ggsave("Fig_3.3.1_before_after_plot.jpg", height = 7.5, width = 6.8, units = "in")
+ggsave("Fig_3.3.1_before_after_plot.jpg", height = 6, width = 6.8, units = "in")
 
 # Linear Models for Taxidermy Effectiveness -------------------------------
 
