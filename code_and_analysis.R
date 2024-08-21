@@ -54,7 +54,7 @@ koe_data <- read.csv("koe_data.csv", na.strings = "") %>%
     site = gsub(x = site, pattern = "essex", replacement = "mainland")
   ) %>%
   mutate( 
-    duration_sec = duration/10000, # converting duration from milliseconds to decisecond 
+    duration_sec = duration/10000,
     CC_per_time = CC / duration_sec, # standardizing call frequencies according to audio clip duration
     DW_per_time = DW / duration_sec,
     HQ_per_time = HQ / duration_sec,
@@ -635,7 +635,7 @@ DW_model <- lmer(DW_per_time ~ before_after + total_sparrows + (1|taxidermy_wild
 
 summary(CC_model)
 summary(NC_model)
-summary(TQ_model) # significant
+summary(TQ_model)
 summary(HQ_model)
 summary(CA_model)
 summary(DW_model)
@@ -702,7 +702,7 @@ CA_model_site <- lmer(CA_per_time ~ site + (1|before_after), data = combined_dat
 DW_model_site <- lmer(DW_per_time ~ site + (1|before_after), data = combined_data_long_binary_ba)
 
 summary(CC_model_site)
-summary(NC_model_site) # significantly more on mainland
+summary(NC_model_site)
 summary(TQ_model_site) 
 summary(HQ_model_site) 
 summary(CA_model_site)
